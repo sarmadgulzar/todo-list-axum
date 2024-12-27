@@ -16,23 +16,22 @@ git clone https://github.com/sarmadgulzar/todo-list-axum.git
 cd todo-list-axum
 ```
 
-2. Install dependencies:
+2. Set up the database:
+
+```bash
+export DATABASE_URL=sqlite://db.sqlite3
+
+cargo install sqlx-cli
+
+sqlx database create
+
+sqlx migrate run
+```
+
+3. Install dependencies:
 
 ```bash
 cargo build
-```
-
-3. Set up the database:
-
-```bash
-# Install sqlx-cli
-cargo install sqlx-cli
-
-# Create the database
-sqlx database create
-
-# Run migrations
-sqlx migrate run
 ```
 
 4. Run the server:
@@ -48,6 +47,36 @@ cargo run
 - `GET /todos/:id`: Get a todo by ID.
 - `PATCH /todos/:id`: Update a todo by ID.
 - `DELETE /todos/:id`: Delete a todo by ID.
+
+## API Examples
+
+Test the API with these curl commands:
+
+```bash
+# Create a new todo
+curl -X POST http://localhost:3000/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Buy groceries", "completed": false}'
+
+# Create another todo
+curl -X POST http://localhost:3000/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Learn Rust", "completed": false}'
+
+# Get all todos
+curl http://localhost:3000/todos
+
+# Get a specific todo (replace 1 with the actual ID)
+curl http://localhost:3000/todos/1
+
+# Update a todo (replace 1 with the actual ID)
+curl -X PATCH http://localhost:3000/todos/1 \
+  -H "Content-Type: application/json" \
+  -d '{"completed": true}'
+
+# Delete a todo (replace 1 with the actual ID)
+curl -X DELETE http://localhost:3000/todos/1
+```
 
 ## License
 
